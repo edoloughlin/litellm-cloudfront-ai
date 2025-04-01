@@ -1,5 +1,5 @@
 # litellm-cloudfront-ai
-An attempt to make LiteLLM and Aider work with CLoudflare AI Gateway and Deepseek
+An attempt to make LiteLLM and Aider work with Cloudflare AI Gateway and Deepseek
 
 Best of luck - they don't get along.
 
@@ -12,7 +12,7 @@ You will need to bring your own Cloudfront AI Gateway and an API key you can use
 
 Setup and run:
 
-- Run `.setup.sh`.
+- Run `./setup.sh`.
 
 This will create a Python virtual env and install LiteLLM and its deps. Note that it installs a specific version because it patches it.
 
