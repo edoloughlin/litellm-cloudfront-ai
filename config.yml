@@ -1,0 +1,23 @@
+general_settings:
+  port: 4000
+  master_key: sk-myproxykey123
+  litellm_verbose: False
+model_list:
+  - model_name: deepseek-r1
+    litellm_params:
+      model: "/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+      api_base: os.environ/CF_API_BASE
+      api_key: os.environ/CF_API_KEY
+      max_tokens: 40000  # Lower this to avoid confusion. Confusion will not be avoided.
+      custom_llm_provider: cloudflare
+      prompt_template: '{"prompt": "{{content}}"}'
+      drop_params: True
+  - model_name: llama-test
+    litellm_params:
+      model: "/@cf/meta/llama-2-7b-chat-fp16"
+      api_base: os.environ/CF_API_BASE
+      api_key: os.environ/CF_API_KEY
+      max_tokens: 2000
+      custom_llm_provider: cloudflare
+      prompt_template: '{"prompt": "{{content}}"}'
+      drop_params: True

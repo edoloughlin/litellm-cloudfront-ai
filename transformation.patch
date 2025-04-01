@@ -1,0 +1,52 @@
+--- venv/lib/python3.12/site-packages/litellm/llms/cloudflare/chat/transformation.py	2025-04-01 01:23:22.869859628 +0100
++++ src/transformation.py	2025-04-01 01:24:17.788792279 +0100
+@@ -123,10 +123,9 @@
+             if k not in optional_params:
+                 optional_params[k] = v
+ 
+-        data = {
+-            "messages": messages,
+-            **optional_params,
+-        }
++        # Use the prompt template explicitly
++        content = messages[0]["content"]  # Assume single user message
++        data = {"prompt": content, **optional_params}
+         return data
+ 
+     def transform_response(
+@@ -144,15 +143,29 @@
+         json_mode: Optional[bool] = None,
+     ) -> ModelResponse:
+         completion_response = raw_response.json()
++        
++        # Store raw response as intended by LiteLLM
++        logging_obj.post_call_raw_response = completion_response
+ 
+-        model_response.choices[0].message.content = completion_response["result"][  # type: ignore
+-            "response"
+-        ]
++        # Flexible content extraction
++        result = completion_response.get("result", {})
++        content = (
++            result.get("response") or 
++            result.get("text") or 
++            result.get("output", {}).get("text") or 
++            result.get("message", {}).get("content", "")
++        )
++        
++        if not content:
++            error_msg = f"No content found in Cloudflare response: {completion_response}"
++            if not completion_response.get("success", True):
++                error_msg += f" | Errors: {completion_response.get('errors', 'Unknown')}"
++            raise CloudflareError(status_code=raw_response.status_code, message=error_msg)
++
++        model_response.choices[0].message.content = content
+ 
+         prompt_tokens = litellm.utils.get_token_count(messages=messages, model=model)
+-        completion_tokens = len(
+-            encoding.encode(model_response["choices"][0]["message"].get("content", ""))
+-        )
++        completion_tokens = len(encoding.encode(model_response["choices"][0]["message"].get("content", "")))
+ 
+         model_response.created = int(time.time())
+         model_response.model = "cloudflare/" + model

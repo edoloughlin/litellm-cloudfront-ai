@@ -1,0 +1,16 @@
+{
+    "openai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b": {
+        "max_tokens": 80000,
+        "max_input_tokens": 40000,
+        "max_output_tokens": 40000,
+        "input_cost_per_token": 0.00000014,
+        "input_cost_per_token_cache_hit": 0.000000014,
+        "output_cost_per_token": 0.00000028,
+        "litellm_provider": "openai",
+        "mode": "chat",
+        "supports_function_calling": true,
+        "supports_assistant_prefill": true,
+        "supports_tool_choice": true,
+        "supports_prompt_caching": true
+    }
+}
