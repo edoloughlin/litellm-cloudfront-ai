@@ -16,7 +16,7 @@ Setup and run:
 
 This will create a Python virtual env and install LiteLLM and its deps. Note that it installs a specific version because it patches it.
 
-- Copy the files in `./aider` to `$HOME` or a Git directory you want to work on
+- Copy the files in `./aider` to `$HOME` or a Git directory you want to work on and rename them so they start with `.`
 
 - Run `./litellm.sh` here.
 
